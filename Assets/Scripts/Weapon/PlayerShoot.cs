@@ -16,16 +16,16 @@ public class PlayerShoot : NetworkBehaviour
     private const string PLAYER_TAG = "PLAYER";
     void Start()
     {
-        if(cam == null)
+        if (cam == null)
         {
-                Debug.LogError("PlayerShoot: No camera referenced!");
-                this.enabled = false;
+            Debug.LogError("PlayerShoot: No camera referenced!");
+            this.enabled = false;
         }
     }
 
     void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
             Shoot();
         }
@@ -35,21 +35,22 @@ public class PlayerShoot : NetworkBehaviour
     void Shoot()
     {
         RaycastHit hit;
-        if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, weapon.range, mask))
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, weapon.range, mask))
         {
-            if(hit.collider.tag == PLAYER_TAG)
+            if (hit.collider.tag == PLAYER_TAG)
             {
-                CmdPlayerShot(hit.collider.name);
+                CmdPlayerShot(hit.collider.name, weapon.damage);
             }
         }
 
     }
 
     [Command]
-    void CmdPlayerShot(String _PlayerID)
+    void CmdPlayerShot(String _playerID, int damage)
     {
-        Debug.Log(_PlayerID + "has been shot.");
-
+        Debug.Log(_playerID + "has been shot.");
+        Player _player = GameManager.GetPlayer(_playerID);
+        _player.TakeDamage(damage);
         //Destroy(GameObject.Find(_ID));
     }
 }
