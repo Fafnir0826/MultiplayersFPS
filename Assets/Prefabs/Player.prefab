@@ -234,6 +234,9 @@ MonoBehaviour:
   - {fileID: 6317377786129250916}
   - {fileID: 8513092220220332565}
   remoteLayerName: RemotePlayer
+  dontDrawLayerName: DontDraw
+  playerGraphics: {fileID: 6317377786086653281}
+  playerUIPrefab: {fileID: 6663838691386812793, guid: 4941d2547ba3b094db7ef33cf0ddd4aa, type: 3}
 --- !u!153 &1409315070331953441
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -347,9 +350,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 183
   weapon:
-    name: Glock
+    name: Sci-Fi
     damage: 10
     range: 100
+  weaponGFX: {fileID: 6317377786634275798}
+  weaponLayerName: Weapon
 --- !u!114 &2535537075587410455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,7 +497,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 247
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -525,7 +530,7 @@ GameObject:
   - component: {fileID: 6317377786634275795}
   - component: {fileID: 6317377786634275792}
   m_Layer: 6
-  m_Name: Cube
+  m_Name: Sci-Fi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

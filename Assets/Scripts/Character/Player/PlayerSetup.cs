@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -9,55 +10,80 @@ public class PlayerSetup : NetworkBehaviour
 
     [SerializeField]
     string remoteLayerName = "RemotePlayer";
+
+    [SerializeField]
+    string dontDrawLayerName = "DontDraw";
+    [SerializeField]
+    public GameObject playerGraphics;
+    [SerializeField]
+    public GameObject playerUIPrefab;
+    private GameObject playerUIInstance;
     Camera sceneCamera;
 
-     void Start()
-     {
-        if(!isLocalPlayer)
+    void Start()
+    {
+        if (!isLocalPlayer)
         {
             DisableComponets();
             AssignRemoteLayer();
         }
-         else
+        else
         {
             sceneCamera = Camera.main;
-            if(sceneCamera != null)
+            if (sceneCamera != null)
             {
                 sceneCamera.gameObject.SetActive(false);
             }
+            // Disable Player graphics for local player
+            SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
+
+            // Create PlayerUI
+            playerUIInstance = Instantiate(playerUIPrefab);
+            playerUIInstance.name = playerUIPrefab.name;
         }
 
         GetComponent<Player>().Setup();
-     }
-     public override void OnStartClient()
-     {
-         base.OnStartClient();
+    }
 
-         string _netID = GetComponent<NetworkIdentity>().netId.ToString();
-         Player _player = GetComponent<Player>();
-         GameManager.RegisterPlayer(_netID, _player);
-     }
+    void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        obj.layer = newLayer;
+        
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
 
-     void DisableComponets()
-     {
-        for(int i = 0; i < componetsToDisable.Length;i++)
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        string _netID = GetComponent<NetworkIdentity>().netId.ToString();
+        Player _player = GetComponent<Player>();
+        GameManager.RegisterPlayer(_netID, _player);
+    }
+
+    void DisableComponets()
+    {
+        for (int i = 0; i < componetsToDisable.Length; i++)
         {
             componetsToDisable[i].enabled = false;
         }
-     }
+    }
 
-     void AssignRemoteLayer()
-     {
+    void AssignRemoteLayer()
+    {
         gameObject.layer = LayerMask.NameToLayer(remoteLayerName);
-     }
+    }
 
-     void OnDisable()
-     {
-        if(sceneCamera != null)
+    void OnDisable()
+    {
+        if (sceneCamera != null)
         {
             sceneCamera.gameObject.SetActive(true);
         }
 
         GameManager.UnRegisterPlayer(transform.name);
-     }
+    }
 }

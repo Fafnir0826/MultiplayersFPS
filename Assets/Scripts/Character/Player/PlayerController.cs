@@ -14,8 +14,6 @@ public class PlayerController : MonoBehaviour
     private float thrusterForce = 1000f;
 
     [Header("Spring setting")]
-    /*[SerializeField]
-    private JointDriveMode jointmode = JointDriveMode.Position;*/
     [SerializeField]
     private float jointSpring = 20f;
     [SerializeField]
