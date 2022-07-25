@@ -25,7 +25,7 @@ public class Player : NetworkBehaviour
     private bool[] wasEnabled;
 
   
-    void Update()
+    /*void Update()
     {
         if(!isLocalPlayer)
             return;
@@ -33,7 +33,7 @@ public class Player : NetworkBehaviour
         {
             RpcTakeDamage(1000);
         }
-    }
+    }*/
 
     public void Setup()
     {
@@ -47,7 +47,7 @@ public class Player : NetworkBehaviour
 
     IEnumerator Respawn()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnTime);
 
         SetDefaults();
 
