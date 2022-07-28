@@ -12,6 +12,19 @@ public class PlayerController : MonoBehaviour
     private float lookSensitivty = 2.0f;
     [SerializeField]
     private float thrusterForce = 1000f;
+    [SerializeField]
+    private float thrusterFuelBurnSpeed = 1f;
+    [SerializeField]
+    private float thrusterFuelRegenSpeed = 0.3f;
+    private float thrusterFuelAmount = 1f;
+
+    public float GetThrusterFuelAmount()
+    {
+        return thrusterFuelAmount;
+    }
+
+    [SerializeField]
+    private LayerMask environmentsMask;
 
     [Header("Spring setting")]
     [SerializeField]
@@ -32,6 +45,16 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        RaycastHit _hit;
+        if(Physics.Raycast(transform.position, Vector3.down, out _hit, environmentsMask))
+        {
+            joint.targetPosition = new Vector3(0f, _hit.point.y, 0f);
+        }
+        else
+        {
+             joint.targetPosition = new Vector3(0f, 0f, 0f);
+        }
+
         float xMov = Input.GetAxisRaw("Horizontal");
         float zMov = Input.GetAxisRaw("Vertical");
 
@@ -60,15 +83,21 @@ public class PlayerController : MonoBehaviour
         motor.RotateCamera(_cameraRotationX);
 
         Vector3 _thrusterForce = Vector3.zero;
-        if(Input.GetButton("Jump"))
+        if(Input.GetButton("Jump") && thrusterFuelAmount >0f)
         {
+            thrusterFuelAmount -= thrusterFuelBurnSpeed * Time.deltaTime;
+
             _thrusterForce = Vector3.up * thrusterForce;
             SetJointSettings(0f);
         }
         else
         {
+            thrusterFuelAmount += thrusterFuelRegenSpeed * Time.deltaTime;
+
             SetJointSettings(jointSpring);
         }
+
+        thrusterFuelAmount = Mathf.Clamp(thrusterFuelAmount, 0f, 1f);
         //apply thrusterForce
         motor.ApplyThruster(_thrusterForce);
     }
