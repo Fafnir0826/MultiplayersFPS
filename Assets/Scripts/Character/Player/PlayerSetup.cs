@@ -45,9 +45,10 @@ public class PlayerSetup : NetworkBehaviour
                 Debug.LogError("No PlayerUI component on PlayerUI prefab.");
             }
             ui.SetController(GetComponent<PlayerController>());
+            GetComponent<Player>().PlayerSetup();
         }
 
-        GetComponent<Player>().Setup();
+       
     }
 
     void SetLayerRecursively(GameObject obj, int newLayer)

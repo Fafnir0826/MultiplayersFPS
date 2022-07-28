@@ -33,6 +33,7 @@ public class Player : NetworkBehaviour
     [SerializeField]
     private GameObject spawnEffect;
 
+    private bool firstStep = true;
 
 
     /*void Update()
@@ -45,13 +46,36 @@ public class Player : NetworkBehaviour
         }
     }*/
 
-    public void Setup()
+    public void SetupPlayer()
     {
-        wasEnabled = new bool[disableOnDeath.Length];
-        for (int i = 0; i < wasEnabled.Length; i++)
+        if (isLocalPlayer)
         {
-            wasEnabled[i] = disableOnDeath[i].enabled;
+            GameManager.instance.SetSceneCameraActive(false);
+            GetComponent<PlayerSetup>().playerUIInstance.SetActive(true);
         }
+        CmdBroadCastNewPlayerSetup();
+    }
+
+    [Command]
+    private void CmdBroadCastNewPlayerSetup()
+    {
+        RpcSetupPlayerONAllClients();
+    }
+
+    [ClientRpc]
+    private void RpcSetupPlayerONAllClients()
+    {
+        if(firstStep)
+        {
+            wasEnabled = new bool[disableOnDeath.Length];
+            for (int i = 0; i < wasEnabled.Length; i++)
+            {
+                wasEnabled[i] = disableOnDeath[i].enabled;
+            }
+
+            firstStep = false;
+        }
+       
         SetDefaults();
     }
 
@@ -63,7 +87,9 @@ public class Player : NetworkBehaviour
         transform.position = respawnPoint.position;
         transform.rotation = respawnPoint.rotation;
 
-        SetDefaults();
+        yield return new WaitForSeconds(0.1f);
+
+        SetupPlayer();
     }
 
     public void SetDefaults()
@@ -82,13 +108,7 @@ public class Player : NetworkBehaviour
         if (col != null)
             col.enabled = true;
 
-        if (isLocalPlayer)
-        {
-            GameManager.instance.SetSceneCameraActive(false);
-            GetComponent<PlayerSetup>().playerUIInstance.SetActive(true);
-        }
-
-         GameObject _spawnIns = (GameObject)Instantiate(spawnEffect, transform.position, Quaternion.identity);
+        GameObject _spawnIns = (GameObject)Instantiate(spawnEffect, transform.position, Quaternion.identity);
         Destroy(_spawnIns, 3f);
     }
 
