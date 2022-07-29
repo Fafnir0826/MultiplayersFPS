@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     public static void RegisterPlayer(string _netID, Player _player)
     {
-        string _playerID = "Player" + _netID;
+        string _playerID = PLAYER_ID_PREFIX + _netID;
         players.Add(_playerID, _player);
         _player.transform.name = _playerID;
     }

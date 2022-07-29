@@ -7,10 +7,9 @@ public class PlayerUI : MonoBehaviour
 
     private PlayerController controller;
 
-    public void SetController(PlayerController _controller)
+    public void SetPlayer(Player _player)
     {
-       controller = _controller;
-       
+       controller = _player.GetComponent<PlayerController>();
     }
     void Update()
     {

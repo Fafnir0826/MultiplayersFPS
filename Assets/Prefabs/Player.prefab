@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 8513092220220332565}
   - component: {fileID: 2535537075587410455}
   - component: {fileID: 3658391865529573620}
+  - component: {fileID: 218045172700148716}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -397,6 +398,28 @@ MonoBehaviour:
     range: 100
     fireRate: 0
     graphics: {fileID: 1751000261821788937, guid: ea88dfa85be4b0e45abe320dd47d4285, type: 3}
+--- !u!114 &218045172700148716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6317377785875044829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13d6c522af31447398568cc65334232b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!1 &6317377785990996135
 GameObject:
   m_ObjectHideFlags: 0
